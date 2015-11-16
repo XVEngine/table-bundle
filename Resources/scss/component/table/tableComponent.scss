@@ -1,3 +1,73 @@
-xv-uploader {
+xv-table {
+  display: block;
+  position: relative;
+  height: 100%;
+
+  $hoverBg: #f1f1f1;
+  $borderColor: #ececec;
+  $evenBg: #fbfbfb;
+
+  > div {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+
+    > .wrapper {
+      position: relative;
+      width: 100%;
+      height: 100%;
+
+      > table {
+        white-space: nowrap;
+        border-collapse: collapse;
+        width: 100%;
+
+        &, & td, & th {
+          border: 1px solid $borderColor;
+        }
+
+        > colgroup {
+          > col {
+            &.hover {
+              background: $hoverBg !important;
+            }
+          }
+        }
+
+        > thead {
+          background: #e4e4e4;
+          > tr {
+            > th {
+              padding: 10px;
+            }
+          }
+        }
+
+        > tbody {
+          > tr {
+
+            &:nth-child(even) {
+              background: $evenBg;
+            }
+
+            > td {
+              padding: 10px;
+            }
+
+            &:hover {
+              background: $hoverBg;
+            }
+          }
+        }
+
+        > tfoot {
+
+        }
+      }
+    }
+  }
 
 }
