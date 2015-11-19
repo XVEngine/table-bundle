@@ -7,7 +7,30 @@ xv-table {
   $borderColor: #ececec;
   $evenBg: #fbfbfb;
 
-  > div {
+
+  > .sticky-header {
+    position: absolute;
+    top:0;
+    left:0;
+    right:0;
+    background: #e4e4e4;
+    z-index:1;
+    overflow: hidden;
+    display: flex;
+
+    > th {
+      flex: none;
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  .table-th-style {
+    padding: 10px;
+    border: 1px solid $borderColor;
+  }
+
+  > .pre-wrapper {
     position: absolute;
     top: 0;
     left: 0;
@@ -38,11 +61,7 @@ xv-table {
         }
 
         > thead {
-          background: #e4e4e4;
           > tr {
-            > th {
-              padding: 10px;
-            }
           }
         }
 

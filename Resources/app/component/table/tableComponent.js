@@ -17,7 +17,8 @@
             //@formatter:off
             /**<string>
                     <xv-table class='event-resize'>
-                        <div>
+                        <div class='sticky-header'></div>
+                        <div class='pre-wrapper'>
                             <div class='wrapper'>
                                 <table>
                                     <colgroup></colgroup>
@@ -54,6 +55,7 @@
      */
     namespace.tableComponent.prototype.init = function() {
         this.$wrapper = this.$element.find(".wrapper");
+        this.$stickyHeader = this.$element.find(".sticky-header");
         this.$table = this.$element.find("table");
         this.$colgroup = this.$table.find("colgroup");
         this.$thead = this.$table.find("thead");
@@ -120,9 +122,26 @@
 
         this.$element.on("event-resize",  function(){
             self.$wrapper.perfectScrollbar("update");
+            self.refreshHeader();
             return this;
         });
 
+
+        this.$wrapper.on('ps-scroll-x', function () {
+            self.updateHeaderPosition();
+            setTimeout(function(){
+                self.updateHeaderPosition();
+            }, 50);
+        });
+    };
+
+
+    /**
+     *
+     */
+    namespace.tableComponent.prototype.updateHeaderPosition = function(obj) {
+        this.$stickyHeader.scrollLeft(this.$wrapper.scrollLeft());
+        return this;
     };
 
 
@@ -243,6 +262,7 @@
 
         /** RENDER HEADERS **/
         this.$thead.html("");
+        this.$stickyHeader.html("");
         $tr = $("<tr>");
 
 
@@ -255,9 +275,17 @@
 
 
             $td = $("<th>");
-            $td.append($("<div>").html(column.label));
+            $td.addClass("table-th-style");
+            column.$cache = $("<div>").html(column.label);
+
+            $td.append(column.$cache);
             $tr.append($td);
+
+            column.$td = $td;
+            column.$tdSticky = $td.clone();
+            this.$stickyHeader.append(column.$tdSticky);
         }
+
         this.$thead.append($tr);
 
 
@@ -297,7 +325,7 @@
         }
 
 
-
+        this.refreshHeader();
     };
 
     /**
@@ -316,13 +344,24 @@
     namespace.tableComponent.prototype.clearColumns = function() {
         this._columns = [];
         this.$thead.find("> tr").html("");
+        this.$stickyHeader.html("");
         this.$colgroup.html("");
         return this;
     };
 
 
     namespace.tableComponent.prototype.refreshHeader = function(){
+        for(var i = 0; i < this._columns.length; i++) {
+            column = this._columns[i];
+            if(!column.$td) continue;
 
+            column.$tdSticky.css({
+                "width" : column.$td.outerWidth(),
+                "height" : column.$td.outerHeight()
+            });
+        }
+        this.updateHeaderPosition();
+        return true;
     };
 
 
