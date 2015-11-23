@@ -66,7 +66,7 @@
         this._$lastFocus = null;
 
         this.$wrapper.perfectScrollbar();
-
+        this._lastDblClickRow = null;
         this.setColumns(this.params.columns);
         this.setRows(this.params.rows);
 
@@ -109,8 +109,10 @@
 
         this.$tbody.on("click", "> tr > td",  function(){
             var $this = $(this);
-            self._$lastFocus && self._$lastFocus.removeClass("focus");
-            $this.addClass("focus");
+            self._$lastFocus && self._$lastFocus.removeClass("focus") && self._$lastFocus.parent().removeClass("focus");
+
+            $this.addClass("focus") && $this.parent().addClass("focus");
+
             if(!$this.is(self._$lastFocus)){
                 self._$lastFocus && self._$lastFocus.removeClass("dblclick");
                 self._$lastFocus = $this;
@@ -129,10 +131,17 @@
 
         this.$wrapper.on('ps-scroll-x', function () {
             self.updateHeaderPosition();
-            setTimeout(function(){
-                self.updateHeaderPosition();
-            }, 50);
+
+            for(var i = 1; i < 4; i++){
+                setTimeout(function(){
+                    self.updateHeaderPosition();
+                }, i*50);
+            }
         });
+
+        this._interval = setInterval(function(){
+            self.updateHeaderPosition();
+        }, 500);
     };
 
 
@@ -156,8 +165,16 @@
     /**
      *
      */
-    namespace.tableComponent.prototype.getLastDblClickRow = function() {
-        return app.utils.ifsetor(this._lastDblClickRow, null);
+    namespace.tableComponent.prototype.getLastDblClickRow = function(property) {
+        if(!this._lastDblClickRow){
+            return null;
+        }
+
+        if(property){
+            return this._lastDblClickRow[property];
+        }
+
+        return this._lastDblClickRow;
     };
 
 
@@ -362,6 +379,10 @@
         }
         this.updateHeaderPosition();
         return true;
+    };
+
+    namespace.tableComponent.prototype.onDestroy = function(){
+        clearInterval(this._interval);
     };
 
 

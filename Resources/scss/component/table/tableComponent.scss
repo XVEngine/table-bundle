@@ -68,6 +68,10 @@ xv-table {
         > tbody {
           > tr {
 
+            &.focus {
+              outline: 1px solid $main-color2;
+            }
+
             &:nth-child(even) {
               background: $evenBg;
             }

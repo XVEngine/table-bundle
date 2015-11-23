@@ -22,12 +22,12 @@ class TableComponent extends AbstractComponent {
     /**
      * @var Column[]
      */
-    protected $columns;
+    protected $columns = [];
 
     /**
      * @var Row[]
      */
-    protected $rows;
+    protected $rows = [];
 
     /*
      *
