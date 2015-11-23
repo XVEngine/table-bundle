@@ -81,6 +81,16 @@ class TableComponent extends AbstractComponent {
 
     /**
      * @author Krzysztof Bednarczyk
+     * @param AbstractComponent $footer
+     * @return $this
+     */
+    public function setFooterComponent(AbstractComponent $footer){
+        return $this->setParam("footerComponent", $footer);
+    }
+
+
+    /**
+     * @author Krzysztof Bednarczyk
      * @return array
      */
     public function jsonSerialize() {

@@ -29,6 +29,9 @@
                                 </table>
                             </div>
                         </div>
+                        <footer class='event-resize'>
+                            <div></div>
+                        </footer>
                     </xv-table>
              </string>*/
             //@formatter:on
@@ -54,6 +57,7 @@
      * @returns {undefined}
      */
     namespace.tableComponent.prototype.init = function() {
+        this.$preWrapper = this.$element.find(".pre-wrapper");
         this.$wrapper = this.$element.find(".wrapper");
         this.$stickyHeader = this.$element.find(".sticky-header");
         this.$table = this.$element.find("table");
@@ -61,6 +65,9 @@
         this.$thead = this.$table.find("thead");
         this.$tbody = this.$table.find("tbody");
         this.$tfoot = this.$table.find("tfoot");
+
+        this.$footer = this.$element.find("> footer");
+
         this._rows = [];
         this._columns = [];
         this._$lastFocus = null;
@@ -69,6 +76,9 @@
         this._lastDblClickRow = null;
         this.setColumns(this.params.columns);
         this.setRows(this.params.rows);
+
+        this.params.footerComponent && this.setFooterComponent(this.params.footerComponent);
+
 
         this.initEvents();
     };
@@ -137,6 +147,11 @@
                     self.updateHeaderPosition();
                 }, i*50);
             }
+        });
+
+        this.$footer.on("event-resize", function(){
+            self.$preWrapper.css('bottom', self.$footer.outerHeight(true)+"px");
+            self.$wrapper.perfectScrollbar("update");
         });
 
         this._interval = setInterval(function(){
@@ -383,6 +398,16 @@
 
     namespace.tableComponent.prototype.onDestroy = function(){
         clearInterval(this._interval);
+    };
+
+
+
+    namespace.tableComponent.prototype.setFooterComponent = function(component){
+        var self = this;
+        return app.utils.buildComponent(component).then(function($html){
+            self.$footer.find("> div").html($html);
+            return true;
+        });
     };
 
 
