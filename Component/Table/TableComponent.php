@@ -40,14 +40,28 @@ class TableComponent extends AbstractComponent {
     /**
      * @author Krzysztof Bednarczyk
      * @param Column $column
-     * @return Column
+     * @return $this
      */
     public function addColumn(Column $column){
         $this->columns[$column->getId()] = $column;
 
-        return $column;
+        return $this;
     }
 
+
+    /**
+     * @author Krzysztof Bednarczyk
+     * @param Column $column
+     * @return $this
+     */
+    public function setColumns($columns){
+        $this->columns = [];
+        foreach($columns as $column){
+            $this->addColumn($column);
+        }
+
+        return $this;
+    }
 
     /**
      * @author Krzysztof Bednarczyk

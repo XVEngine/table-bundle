@@ -7,14 +7,9 @@ xv-table {
   $borderColor: #ececec;
   $evenBg: #fbfbfb;
 
-
   > .sticky-header {
-    position: absolute;
-    top:0;
-    left:0;
-    right:0;
     background: #e4e4e4;
-    z-index:1;
+    z-index: 1;
     overflow: hidden;
     display: flex;
 
@@ -22,12 +17,18 @@ xv-table {
       flex: none;
       display: flex;
       align-items: center;
+      border: 1px solid $borderColor;
+      border-left-width: 0;
+      border-bottom-width: 0px;
+
+      &:first-of-type {
+        border-left-width: 1px;
+      }
     }
   }
 
   .table-th-style {
     padding: 10px;
-    border: 1px solid $borderColor;
   }
 
   > .pre-wrapper {
@@ -36,7 +37,6 @@ xv-table {
     left: 0;
     right: 0;
     bottom: 0;
-
 
     > .wrapper {
       position: relative;
@@ -62,6 +62,12 @@ xv-table {
 
         > thead {
           > tr {
+            > th {
+              > div {
+                height:0;
+                overflow-y:hidden;
+              }
+            }
           }
         }
 
@@ -78,6 +84,22 @@ xv-table {
 
             > td {
               padding: 10px;
+
+              &.table-checkbox {
+                > div {
+                  width: 20px;
+                  padding-bottom: 100%;
+                  outline: 1px solid $border-color;
+                  position: relative;
+                }
+
+                &.checked {
+                  > div {
+                    background: url('data:image/svg+xml;charset=utf-8;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTAwIDEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCgk8cGF0aCBkPSJNMTYuNjY3LDYyLjE2N2MzLjEwOSw1LjU1LDcuMjE3LDEwLjU5MSwxMC45MjYsMTUuNzUgYzIuNjE0LDMuNjM2LDUuMTQ5LDcuNTE5LDguMTYxLDEwLjg1M2MtMC4wNDYtMC4wNTEsMS45NTksMi40MTQsMi42OTIsMi4zNDNjMC44OTUtMC4wODgsNi45NTgtOC41MTEsNi4wMTQtNy4zIGM1Ljk5Ny03LjY5NSwxMS42OC0xNS40NjMsMTYuOTMxLTIzLjY5NmM2LjM5My0xMC4wMjUsMTIuMjM1LTIwLjM3MywxOC4xMDQtMzAuNzA3QzgyLjAwNCwyNC45ODgsODQuODAyLDIwLjYwMSw4NywxNiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjEzcHgiIHN0cm9rZT0iIzAwMCIgZmlsbD0ibm9uZSI+DQoJPC9wYXRoPg0KPC9zdmc+');
+
+                  }
+                }
+              }
             }
 
             &:hover {
@@ -96,8 +118,8 @@ xv-table {
   > footer {
     position: absolute;
     bottom: 0;
-    left:0;
-    right:0;
+    left: 0;
+    right: 0;
     > div {
       width: 100%;
     }

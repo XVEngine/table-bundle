@@ -16,7 +16,7 @@
         var tmplString = app.utils.getString(function() {
             //@formatter:off
             /**<string>
-                    <xv-table class='event-resize'>
+                    <xv-table class='event-resize event-insert'>
                         <div class='sticky-header'></div>
                         <div class='pre-wrapper'>
                             <div class='wrapper'>
@@ -93,6 +93,12 @@
             self.$colgroup.find("col.hover").removeClass("hover");
         });
 
+
+        this.$tbody.on("click", ".table-checkbox", function(){
+            $(this).toggleClass("checked");
+            return false;
+        });
+
         this.$tbody.on("mouseenter", "> tr > td",  function(){
             self.$colgroup.find("col.hover").removeClass("hover");
             self.$colgroup.find("col").eq($(this).index()).addClass("hover");
@@ -133,6 +139,12 @@
         });
 
         this.$element.on("event-resize",  function(){
+            self.$wrapper.perfectScrollbar("update");
+            self.refreshHeader();
+            return this;
+        });
+
+        this.$element.on("event-insert",  function(){
             self.$wrapper.perfectScrollbar("update");
             self.refreshHeader();
             return this;
@@ -307,8 +319,7 @@
 
 
             $td = $("<th>");
-            $td.addClass("table-th-style");
-            column.$cache = $("<div>").html(column.label);
+            column.$cache = $("<div>").html($("<div>").addClass("table-th-style").html(column.label));
 
             $td.append(column.$cache);
             $tr.append($td);
@@ -334,23 +345,7 @@
             !row.cache && (row.cache  = {});
 
             for(x = 0; x < this._columns.length; x++){
-                $td = $("<td>");
-                column = this._columns[x];
-
-
-
-                if(!row.cache[column.id]){
-                    value = typeof row.values[column.id] === "undefined" ?  "" : row.values[column.id];
-                    row.cache[column.id] = $("<div>").html(value);
-                }
-
-
-                $td.addClass("column-" + column.id);
-                $td.attr("data-column-label", column.label);
-                $td.attr("data-column-id", column.id);
-                $td.attr("data-row-id", row.id);
-                $td.append(row.cache[column.id]);
-                $tr.append($td);
+                $tr.append(this._renderCell(this._columns[x], row));
             }
 
             this.$tbody.append($tr);
@@ -359,6 +354,39 @@
 
         this.refreshHeader();
     };
+
+
+    /**
+     *
+     */
+    namespace.tableComponent.prototype._renderCell = function(column, row) {
+        var $td = $("<td>");
+
+
+        if(!row.cache[column.id]){
+            value = typeof row.values[column.id] === "undefined" ?  "" : row.values[column.id];
+
+            var $cache = $("<div>");
+
+            if(column.checkbox){
+                $td.data("checkbox-value", value);
+                value = '';
+            }
+            row.cache[column.id] = $cache.html(value);
+        }
+
+        if(column.checkbox){
+            $td.addClass("table-checkbox");
+        }
+
+        $td.addClass("column-" + column.id);
+        $td.attr("data-column-label", column.label);
+        $td.attr("data-column-id", column.id);
+        $td.attr("data-row-id", row.id);
+        $td.append(row.cache[column.id]);
+        return $td;
+    };
+
 
     /**
      *
@@ -387,11 +415,13 @@
             column = this._columns[i];
             if(!column.$td) continue;
 
+
             column.$tdSticky.css({
-                "width" : column.$td.outerWidth(),
-                "height" : column.$td.outerHeight()
+                "width" : column.$td.outerWidth()
             });
         }
+
+        this.$preWrapper.css("top", this.$stickyHeader.outerHeight());
         this.updateHeaderPosition();
         return true;
     };
