@@ -64,8 +64,8 @@ xv-table {
           > tr {
             > th {
               > div {
-                height:0;
-                overflow-y:hidden;
+                height: 0;
+                overflow-y: hidden;
               }
             }
           }
@@ -88,7 +88,11 @@ xv-table {
               &.table-checkbox {
                 > div {
                   width: 20px;
-                  padding-bottom: 100%;
+                  &:after {
+                    display: block;
+                    padding-top: 100%;
+                    content: "";
+                  }
                   outline: 1px solid $border-color;
                   position: relative;
                 }
@@ -96,6 +100,8 @@ xv-table {
                 &.checked {
                   > div {
                     background: url('data:image/svg+xml;charset=utf-8;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTAwIDEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4NCgk8cGF0aCBkPSJNMTYuNjY3LDYyLjE2N2MzLjEwOSw1LjU1LDcuMjE3LDEwLjU5MSwxMC45MjYsMTUuNzUgYzIuNjE0LDMuNjM2LDUuMTQ5LDcuNTE5LDguMTYxLDEwLjg1M2MtMC4wNDYtMC4wNTEsMS45NTksMi40MTQsMi42OTIsMi4zNDNjMC44OTUtMC4wODgsNi45NTgtOC41MTEsNi4wMTQtNy4zIGM1Ljk5Ny03LjY5NSwxMS42OC0xNS40NjMsMTYuOTMxLTIzLjY5NmM2LjM5My0xMC4wMjUsMTIuMjM1LTIwLjM3MywxOC4xMDQtMzAuNzA3QzgyLjAwNCwyNC45ODgsODQuODAyLDIwLjYwMSw4NywxNiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjEzcHgiIHN0cm9rZT0iIzAwMCIgZmlsbD0ibm9uZSI+DQoJPC9wYXRoPg0KPC9zdmc+');
+                    background-position: center;
+                    background-size: contain;
 
                   }
                 }
