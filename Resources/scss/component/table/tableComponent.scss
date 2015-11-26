@@ -88,7 +88,11 @@ xv-table {
               &.table-checkbox {
                 > div {
                   width: 20px;
-                  padding-bottom: 100%;
+                  &:after {
+                    display: block;
+                    padding-top: 100%;
+                  }
+
                   outline: 1px solid $border-color;
                   position: relative;
                 }
