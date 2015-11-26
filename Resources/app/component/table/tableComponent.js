@@ -153,12 +153,6 @@
 
         this.$wrapper.on('ps-scroll-x', function () {
             self.updateHeaderPosition();
-
-            for(var i = 1; i < 4; i++){
-                setTimeout(function(){
-                    self.updateHeaderPosition();
-                }, i*50);
-            }
         });
 
         this.$footer.on("event-resize", function(){
@@ -168,7 +162,7 @@
 
         this._interval = setInterval(function(){
             self.updateHeaderPosition();
-        }, 500);
+        }, 200);
     };
 
 
@@ -176,7 +170,13 @@
      *
      */
     namespace.tableComponent.prototype.updateHeaderPosition = function(obj) {
-        this.$stickyHeader.scrollLeft(this.$wrapper.scrollLeft());
+
+        var stickyScrollLeft = this.$stickyHeader.scrollLeft();
+        var wrapperScrollLeft = this.$wrapper.scrollLeft();
+        if(stickyScrollLeft !== wrapperScrollLeft){
+            this.$stickyHeader.scrollLeft(wrapperScrollLeft);
+        }
+
         return this;
     };
 
@@ -303,6 +303,7 @@
      */
     namespace.tableComponent.prototype._render = function() {
         var i, row, x, column, $tr, $td, $col;
+        console.log("render");
 
         /** RENDER HEADERS **/
         this.$thead.html("");
@@ -411,6 +412,7 @@
 
 
     namespace.tableComponent.prototype.refreshHeader = function(){
+        console.log("refresh header");
         for(var i = 0; i < this._columns.length; i++) {
             column = this._columns[i];
             if(!column.$td) continue;
