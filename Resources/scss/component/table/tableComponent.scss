@@ -86,6 +86,8 @@ xv-table {
               padding: 10px;
 
               &.table-checkbox {
+                cursor: pointer;
+                
                 > div {
                   width: 20px;
                   &:after {
